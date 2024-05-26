@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1" author="yourname">
+        <createTable tableName="applicant">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="first_name" type="VARCHAR(255)"/>
+            <column name="last_name" type="VARCHAR(255)"/>
+            <column name="email" type="VARCHAR(255)">
+                <constraints unique="true"/>
+            </column>
+            <column name="average_grade" type="DOUBLE"/>
+            <column name="faculty_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="yourname">
+        <createTable tableName="faculty">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="admission_plan" type="INT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="3" author="yourname">
+        <createTable tableName="subject_grade">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="subject_name" type="VARCHAR(255)"/>
+            <column name="grade" type="DOUBLE"/>
+            <column name="applicant_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="4" author="yourname">
+        <addForeignKeyConstraint baseTableName="applicant"
+                                 baseColumnNames="faculty_id"
+                                 referencedTableName="faculty"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_applicant_faculty"/>
+    </changeSet>
+
+    <changeSet id="5" author="yourname">
+        <addForeignKeyConstraint baseTableName="subject_grade"
+                                 baseColumnNames="applicant_id"
+                                 referencedTableName="applicant"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_subject_grade_applicant"/>
+    </changeSet>
+
+</databaseChangeLog>
